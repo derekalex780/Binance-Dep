@@ -1,6 +1,27 @@
-Before running the code, make sure to replace 'your_api_key' and 'your_api_secret' with your actual Binance API key and secret. Additionally, set the asset variable to the desired asset symbol (e.g., 'BTC', 'ETH', etc.), and adjust the amount variable according to the desired deposit amount.
+from binance.client import Client
 
-Please note that this is just a basic example, and you may need to handle additional error cases, implement proper error handling, and ensure you have sufficient account balance for the deposit, among other considerations. Also, make sure to install the python-binance library using pip before running the code: pip install python-binance.
+# Replace with your own API key and secret
+API_KEY = 'your_api_key'
+API_SECRET = 'your_api_secret'
+
+# Create a Binance client
+client = Client(API_KEY, API_SECRET)
+
+# Fetch deposit address for a specific asset
+asset = 'BTC'  # Replace with the desired asset symbol
+address_info = client.get_deposit_address(asset=asset)
+
+if address_info['success']:
+    deposit_address = address_info['address']
+    print(f"Deposit address for {asset}: {deposit_address}")
+
+    # Perform a deposit to the fetched address
+    amount = 0.1  # Replace with the desired deposit amount
+    result = client.withdraw(
+        asset=asset,
+        address=deposit_address,
+        amount=amount
+    )
 
     if 'id' in result:
         print(f"Deposit successful. Transaction ID: {result['id']}")
